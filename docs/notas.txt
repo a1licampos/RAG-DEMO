@@ -1,0 +1,4 @@
+
+langchain Azure AI Search:
+    https://docs.langchain.com/oss/python/integrations/vectorstores/azuresearch
+
