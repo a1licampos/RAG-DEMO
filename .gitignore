@@ -5,6 +5,9 @@
 _env/
 __pycache__/
 
+# --- OS ---
+.DS_Store
+
 # --- Data ---
 data/interim/*
 
