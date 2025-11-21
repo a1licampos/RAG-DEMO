@@ -13,7 +13,6 @@ class LLMOpenAI:
     def __init__(self):
         self.api_key = os.getenv("AZURE_OPEN_AI_KEY")
         self.endpoint = os.getenv("AZURE_OPEN_AI_ENDPOINT")
-        self.api_version = os.getenv("AZURE_OPEN_AI_API_VERSION")
 
         self.embedding_deployment = os.getenv("AZURE_OPEN_AI_EMBEDDING_DEPLOYMENT_NAME")
         self.chat_deployment = os.getenv("AZURE_OPEN_AI_CHAT_DEPLOYMENT_NAME")
@@ -75,6 +74,27 @@ class LLMOpenAI:
         # return response.choices[0].message.content
         return response.output_parsed
     
+    
+    def _get_chat_response_instructions(self, max_tokens: int = 4096, temperature: float = 0.0, instructions_message: str = "", input_message: str = "", text_format: Any = ChatResponseGeneric):
+        try:
+            client = self._get_chat_client()
+
+            # response = client.chat.completions.create(
+            response = client.responses.parse(
+                instructions=instructions_message,
+                input=input_message,
+                max_output_tokens=max_tokens,
+                temperature=temperature,
+                model=self.chat_deployment,
+                text_format=text_format
+            )
+
+        except Exception as e:
+            print(f"Error getting chat response: {e}")
+            raise
+
+        # return response.choices[0].message.content
+        return response.output_parsed
 #endregion
 
 
@@ -84,7 +104,7 @@ class LLMOpenAI:
             embeddings: AzureOpenAIEmbeddings = AzureOpenAIEmbeddings(
                 api_key=self.api_key,
                 azure_endpoint=self.endpoint,
-                openai_api_version=self.api_version,
+                openai_api_version="2024-12-01-preview",
                 azure_deployment=self.embedding_deployment,
             )
 

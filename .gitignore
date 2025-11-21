@@ -4,6 +4,7 @@
 # --- Archivos y carpetas del entorno ---
 _env/
 __pycache__/
+data/*
 
 # --- OS ---
 .DS_Store

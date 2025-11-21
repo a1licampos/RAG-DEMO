@@ -1,3 +1,4 @@
+import logging
 from src.graph.state.graph_state import State, TaskRoute
 from src.core.llm.llm_openai import LLMOpenAI
 
@@ -7,15 +8,30 @@ class NodeRouter:
     def __init__(self):
         self.llmOpenAI = LLMOpenAI()
 
+
     def run(self, state:State):
         try:
-            chat_response = self.llmOpenAI._get_chat_response(
-                system_message="Eres un descriminador de preguntas.",
-                developer_message="Retornar true si la pregunta es educativa, false en caso contrario.",
-                user_message=f"Responde a la siguiente pregunta: {state['user_question']}",
+            with open("src/prompts/node_router.txt", "r") as f:
+                prompt_template = f.read()
+
+            chat_response = self.llmOpenAI._get_chat_response_instructions(
+                instructions_message=prompt_template,
+                input_message=f"Responde a la siguiente pregunta: {state['user_question']}",
                 text_format=TaskRoute
             )
-            return chat_response
+
+            state["user_question_validation"] = chat_response.response
+
         except Exception as e:
-            print(f"Error in NodeRouter run: {e}")
+            logging.error(f"Error in NodeRouter run: {e}")
             raise
+
+        return dict(state)
+
+
+#    _____
+#   ( \/ @\____
+#   /           O
+#  /   (_|||||_/
+# /____/  |||
+#       kimba

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from langchain_core.documents import Document
 from typing import Optional, Union, List, TypedDict, Any
 
 class ChatResponseGeneric(BaseModel):
@@ -10,5 +11,8 @@ class TaskRoute(BaseModel):
 class State(TypedDict):
     user_id: str
     user_question: str
-    user_questions_validation: bool
-    user_answer: Optional[str]
+    user_question_validation: bool
+    chatbot_answer: Optional[str]
+
+    node_upload_vector_store: Optional[bool]
+    node_retrieve_docs: Optional[List[Document]]

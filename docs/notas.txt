@@ -1,4 +1,21 @@
-
 langchain Azure AI Search:
     https://docs.langchain.com/oss/python/integrations/vectorstores/azuresearch
 
+
+Advertencias:
+    * No aplicamos OCR a los pdf
+
+
+Siguientes pasos:
+    - CRUD DB vectorial
+        - Agregar y eliminar archivos al DB vectorial directamente en el front
+
+    - Agregar las últimas "n" interacciones al contexto del chatbot
+
+    - Probar chainlit en el front
+
+    - Crear una branch para alexandria
+        - Tipos de aprendizaje
+        - "Base de datos" con imágenes y videos 
+        - El chatbot puede eligir que imagen mostrar
+            - Poder mostras imágenes y/o videos en el front
