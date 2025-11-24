@@ -16,6 +16,3 @@ Siguientes pasos:
 
     - Crear una branch para alexandria
         - Tipos de aprendizaje
-        - "Base de datos" con imágenes y videos 
-        - El chatbot puede eligir que imagen mostrar
-            - Poder mostras imágenes y/o videos en el front

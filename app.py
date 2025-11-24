@@ -26,6 +26,7 @@ USERS_DB_DUMMY = {
 IMG_LOGO = "src/visualizations/logo_bside.png"
 IMG_BOT = "src/visualizations/chatbot.png"
 IMG_USER = "src/visualizations/usuario.png"
+URL_AZURE_STORAGE = "https://sachatbotdeveusa.blob.core.windows.net/rag/alexandria/visualizations/"
 
 
 async def chat(user_question: str, user_id: str):
@@ -42,7 +43,7 @@ async def chat(user_question: str, user_id: str):
         print(f"Error graph: {e}")
         raise
 
-    return response.get('node_retrieve_docs', []), response.get('chatbot_answer', ".|.")
+    return response.get('node_retrieve_docs', []), response.get('chatbot_answer', ".|."), response.get('chatbot_answer_visualization', ".|.")
 
 
 def run_async(func, *args, **kwargs):
@@ -222,7 +223,7 @@ def main():
                         start = time.time()
                         with concurrent.futures.ThreadPoolExecutor() as executor:
                             future = executor.submit(run_async, chat, user_question, email_user)
-                            metada, respuesta = future.result()
+                            metada, respuesta, url = future.result()
                         end = time.time()
 
                         # Guardar respuesta
@@ -236,6 +237,16 @@ def main():
                         # Mostrar respuesta
                         with st.chat_message("assistant", avatar=IMG_BOT):
                             st.markdown(respuesta)
+
+                        # Mostrar imagen o video
+                        if url:
+                            if url.lower().endswith((".jpg", ".jpeg", ".png", ".gif", ".webp")):
+                                st.image(f"{URL_AZURE_STORAGE}{url}")
+                            elif url.lower().endswith((".mp4", ".webm", ".mov", ".ogg")):
+                                st.video(f"{URL_AZURE_STORAGE}{url}")
+                            else:
+                                st.error("Tipo de archivo no reconocido")
+
 
                         # Mostrar tiempo
                         st.caption(f"⏳ Tiempo de respuesta: {end - start:.2f} segundos")

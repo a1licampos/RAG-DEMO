@@ -12,7 +12,9 @@ class State(TypedDict):
     user_id: str
     user_question: str
     user_question_validation: bool
+
     chatbot_answer: Optional[str]
+    chatbot_answer_visualization: Optional[str]
 
     node_upload_vector_store: Optional[bool]
     node_retrieve_docs: Optional[List[Document]]
