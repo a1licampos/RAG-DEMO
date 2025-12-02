@@ -16,5 +16,7 @@ class State(TypedDict):
     chatbot_answer: Optional[str]
     chatbot_answer_visualization: Optional[str]
 
+    alexandria_type_learning: Optional[int]
+
     node_upload_vector_store: Optional[bool]
     node_retrieve_docs: Optional[List[Document]]

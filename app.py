@@ -28,15 +28,23 @@ IMG_BOT = "src/visualizations/chatbot.png"
 IMG_USER = "src/visualizations/usuario.png"
 URL_AZURE_STORAGE = "https://sachatbotdeveusa.blob.core.windows.net/rag/alexandria/visualizations/"
 
+def type_learning_to_int(type_learning: str) -> int:
+    mapping = {
+        "Kinestésico": 1,
+        "Visual": 2,
+    }
+    return mapping.get(type_learning, 0)
 
-async def chat(user_question: str, user_id: str):
+
+async def chat(user_question: str, user_id: str, alexandria_type_learning: int):
     try:
         graph_builder = GraphBuilder()
         graph = graph_builder.build()
 
         response = await graph.ainvoke({
             "user_id": user_id,
-            "user_question": user_question
+            "user_question": user_question,
+            "alexandria_type_learning": alexandria_type_learning
         })
 
     except Exception as e:
@@ -154,6 +162,16 @@ def main():
                 
                 st.write(f"Seleccionaste: **{st.session_state.direction}**")
 
+            st.sidebar.markdown("### Tipo de aprendizaje")
+            with st.sidebar:
+                alexandria_type_learning = st.sidebar.selectbox(
+                    "Selecciona el tipo de aprendizaje:",
+                    options=[
+                        "Kinestésico",
+                        "Visual",
+                    ],
+                    index=0
+                )
 
             st.sidebar.markdown("### Audio")
             with st.sidebar:
@@ -222,7 +240,7 @@ def main():
 
                         start = time.time()
                         with concurrent.futures.ThreadPoolExecutor() as executor:
-                            future = executor.submit(run_async, chat, user_question, email_user)
+                            future = executor.submit(run_async, chat, user_question, email_user,  type_learning_to_int(alexandria_type_learning))
                             metada, respuesta, url = future.result()
                         end = time.time()
 

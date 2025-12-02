@@ -76,7 +76,7 @@ class GraphBuilder:
             raise
 
     
-    async def run(self, user_question:str, user_id:str):
+    async def run(self, user_question:str, user_id:str, alexandria_type_learning: int):
         try:
             initial_state: State = {
                 "user_id": user_id,
@@ -85,6 +85,7 @@ class GraphBuilder:
 
                 "chatbot_answer": None,
                 "node_retrieve_docs": None,
+                "alexandria_type_learning": alexandria_type_learning,
             }
 
             config = RunnableConfig()

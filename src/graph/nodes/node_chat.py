@@ -13,11 +13,21 @@ class NodeChat:
         try:
             question = state.get("user_question", "")
             retrieve_docs = state.get("node_retrieve_docs", [])
+            alexandria_type_learning = state.get("alexandria_type_learning", 0)
 
             combined_content = "\n".join([doc.page_content for doc in retrieve_docs])
 
-            with open("src/prompts/node_chat.txt", "r") as f:
-                prompt_template = f.read()
+
+            print("Alexandria Type Learning in NodeChat:", alexandria_type_learning)
+
+            if alexandria_type_learning == 1:
+                with open("src/prompts/node_chat_kinestesico.txt", "r") as f:
+                    prompt_template = f.read()
+
+            elif alexandria_type_learning == 2:
+                with open("src/prompts/node_chat_visual.txt", "r") as f:
+                    prompt_template = f.read()
+            
 
             chat_response = self.llmOpenAI._get_chat_response_instructions(
                 instructions_message=prompt_template,
